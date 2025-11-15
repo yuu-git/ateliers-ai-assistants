@@ -1,0 +1,194 @@
+# ateliers-ai-assistants
+
+> AIアシスタント向けコード生成・テスト生成ガイドライン集
+> GitHub Copilot、Cursor、Claude等のAIツールで利用するためのテキストベースリポジトリ
+
+## Overview
+
+- **Repository**: https://github.com/yuu-git/ateliers-ai-assistants
+- **Author**: @yuu-git
+- **Language**: Japanese (日本語)
+- **License**: MIT
+- **Type**: Text-based guidelines and samples
+- **Primary Use**: Git Submodule
+- **Last Updated**: 2025-11-15 (3-tier update system added)
+
+## Purpose
+
+このリポジトリは、AIによる自動コード生成・テスト生成を支援するためのガイドラインとサンプルを提供します。
+特にC#とxUnitを使用した開発において、一貫性のあるコード品質を保つための規約を定義しています。
+
+## Installation
+
+### Quick Setup (Recommended)
+
+```bash
+# ワンライナーで自動セットアップ
+curl -fsSL https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/scripts/init-for-project.sh | bash
+```
+
+このスクリプトは以下を自動実行します：
+- サブモジュールの追加と初期化
+- masterブランチへの切り替え
+- 更新スクリプトのコピー
+- GitHub Actions の設定（オプション）
+
+### Manual Setup
+
+```bash
+# サブモジュールとして追加
+git submodule add https://github.com/yuu-git/ateliers-ai-assistants.git .submodules/ateliers-ai-assistants
+
+# 初期化と更新
+git submodule update --init --recursive
+
+# masterブランチに切り替え
+cd .submodules/ateliers-ai-assistants
+git checkout master
+git pull origin master
+cd ../..
+```
+
+## Updates
+
+### Method 1: Manual Script
+
+```bash
+# 更新スクリプトを実行（init-for-project.sh でコピー済み）
+./scripts/update-ai-guidelines.sh
+```
+
+### Method 2: GitHub Actions (Auto-update)
+
+毎週月曜日9時に自動更新（init-for-project.sh で設定可能）
+
+手動実行：GitHub > Actions > Update AI Guidelines > Run workflow
+
+### Method 3: Direct Command
+
+```bash
+cd .submodules/ateliers-ai-assistants
+git checkout master
+git pull origin master
+cd ../..
+```
+
+## Core Guidelines
+
+### Test Generation (最重要)
+
+- [xUnit Test Creation Guidelines](GitHubCopilot/TestGenGuidelines/TestCreationGuidelines_01.md): C#のxUnit向けテスト自動生成の完全ガイド
+  - テスト命名規則（`TESTNAME_XXX_XXXXX`形式）
+  - partial class による自動生成と手動テストの共存
+  - nameof() を使用したリファクタリング対応
+  - カバレッジ100%を目指すテスト観点
+
+### Code Review Guidelines (参考用)
+
+**注意**: 2024/03/17時点でGitHub Copilotはコードレビューガイドラインをまだサポートしていません
+
+- [Common Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_Common_01.md): 全コードに適用される共通レビュー基準
+- [ValueObject Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_ValueObject_01.md): DDD値オブジェクト向けレビュー基準
+
+## Training Samples
+
+### C# Coding Patterns
+
+- [Common Patterns](AITrainingSamples/Csharp/Common.md): C#の基本パターン（null チェック等）
+- [LINQ Patterns](AITrainingSamples/Csharp/Linq.md): LINQの推奨パターン
+
+### Complete Examples
+
+- [DateTime Extensions Test Example](AITrainingSamples/Csharp/Example/UnitTestExample_01.md): 実装とテストの完全なサンプル
+  - DateTimeExtensions の実装例
+  - 対応するxUnitテストコードの実例
+  - 実践的なテスト設計パターン
+
+## Directory Structure
+
+```
+ateliers-ai-assistants/
+├─ scripts/                    # セットアップ・更新スクリプト
+│  ├─ init-for-project.sh     # 初回セットアップ（ワンライナー）
+│  └─ update-ai-guidelines.sh # 手動更新スクリプト
+├─ .github/workflows/          # GitHub Actions
+│  └─ update-ai-guidelines.yml # 自動更新ワークフロー
+├─ AITrainingSamples/          # AI学習用サンプル
+│  └─ Csharp/                  # C#言語のサンプル
+│     ├─ Common.md             # 基本パターン
+│     ├─ Linq.md               # LINQパターン
+│     └─ Example/              # 完全な実装例
+│        └─ UnitTestExample_01.md
+├─ GitHubCopilot/              # GitHub Copilot向けガイドライン
+│  ├─ CodeReviewGuidelines/   # コードレビュー基準（参考用）
+│  │  ├─ CodeReviewGuidelines_Common_01.md
+│  │  └─ CodeReviewGuidelines_ValueObject_01.md
+│  └─ TestGenGuidelines/       # テスト生成ガイドライン
+│     └─ TestCreationGuidelines_01.md
+├─ README.md                   # リポジトリの基本情報
+├─ ProjectInfo.md              # プロジェクト構造の詳細
+├─ LICENSE.txt                 # MITライセンス
+└─ llms.txt                    # このファイル
+```
+
+## Project Documentation
+
+- [README](README.md): リポジトリの基本情報と使い方
+- [Project Info](ProjectInfo.md): プロジェクト構造の詳細説明
+
+## Branch Strategy
+
+- **master**: 安定版（推奨）
+- **develop**: 開発版
+
+## Technical Details
+
+- **Target Language**: C#
+- **Test Framework**: xUnit
+- **Design Approach**: Domain-Driven Design (DDD) 対応
+- **AI Tools Supported**: 
+  - GitHub Copilot
+  - Cursor
+  - Claude
+  - その他LLMベースのコーディング支援ツール
+
+## Usage in AI Tools
+
+### Cursor / Cline
+
+```
+# Raw URL（推奨・常に最新版）
+@Docs https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/llms.txt
+
+# ローカルのサブモジュール
+@Docs .submodules/ateliers-ai-assistants/llms.txt
+```
+
+### GitHub Copilot
+
+サブモジュールとして追加後、該当ディレクトリ内のファイルを開くことでコンテキストとして認識されます。
+
+## Future Plans
+
+以下のガイドラインは将来的に追加予定です：
+
+- CodeGenGuidelines: コード生成向けガイドライン
+- PromptGuidelines: プロンプト設計のベストプラクティス
+- PromptManuals: コード・テスト自動生成の手順マニュアル
+- TestReviewGuidelines: テストレビュー向けガイドライン
+
+## Contact
+
+- GitHub: [@yuu-git](https://github.com/yuu-git)
+- Repository: https://github.com/yuu-git/ateliers-ai-assistants
+
+## Notes
+
+- このリポジトリは**テキストベース**であり、実行可能なコードは含まれません
+- パッケージではなく**サブモジュール**として利用することを想定しています
+- AIツールが `.md` ファイルを直接参照できるように設計されています
+
+---
+
+*Generated: 2025-11-15*  
+*AI Optimization: LLM-friendly structure with clear hierarchy and direct links*
