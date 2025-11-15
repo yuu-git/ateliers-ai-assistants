@@ -1,0 +1,61 @@
+name: Update AI Guidelines
+
+on:
+  # 毎週月曜日 9:00 (JST) に自動実行
+  schedule:
+    - cron: '0 0 * * 1'  # UTC 0:00 = JST 9:00
+  
+  # 手動実行を許可
+  workflow_dispatch:
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          submodules: true
+      
+      - name: Update submodule to latest
+        run: |
+          git submodule update --remote --merge .submodules/ateliers-ai-assistants
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+      
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .submodules/ateliers-ai-assistants
+          git commit -m "chore: update AI guidelines submodule"
+          git push
+      
+      - name: Create summary
+        run: |
+          if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
+            echo "✅ AI Guidelines サブモジュールを更新しました" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "更新内容を確認するには:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo "cd .submodules/ateliers-ai-assistants" >> $GITHUB_STEP_SUMMARY
+            echo "git log --oneline -5" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ AI Guidelines は既に最新版です" >> $GITHUB_STEP_SUMMARY
+          fi
