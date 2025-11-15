@@ -97,9 +97,9 @@ cd ../..
 `.submodules/ateliers-ai-assistants` 内のファイルを開くことでコンテキストとして認識されます。
 
 主要ファイル：
-- `GitHubCopilot/TestGenGuidelines/TestCreationGuidelines_01.md`
-- `AITrainingSamples/Csharp/Common.md`
-- `AITrainingSamples/Csharp/Linq.md`
+- `ai-generation-guidelines/by-language/csharp/test-generation/xunit.md`
+- `ai-training-samples/codes/csharp/common-patterns.md`
+- `ai-training-samples/codes/csharp/linq-patterns.md`
 
 ### Claude
 
@@ -112,26 +112,120 @@ https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/llms.txt
 
 ## 📚 コンテンツ
 
-### テスト生成ガイドライン（最重要）
+### AI生成ガイドライン
 
-- [xUnit Test Creation Guidelines](GitHubCopilot/TestGenGuidelines/TestCreationGuidelines_01.md)
+#### テスト生成（最重要）
+
+- [xUnit Test Guidelines](ai-generation-guidelines/by-language/csharp/test-generation/xunit.md)
   - テスト命名規則（`TESTNAME_XXX_XXXXX`形式）
   - partial class による自動生成と手動テストの共存
   - nameof() を使用したリファクタリング対応
   - カバレッジ100%を目指すテスト観点
 
-### コードレビューガイドライン（参考用）
+#### コードレビュー（参考用）
 
 **注意**: 2024/03/17時点でGitHub Copilotはコードレビューガイドラインをまだサポートしていません
 
-- [Common Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_Common_01.md)
-- [ValueObject Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_ValueObject_01.md)
+- [Code Quality Principles](ai-generation-guidelines/fundamentals/code-quality-principles.md): 全コードに適用される基本原則
+- [ValueObject Review Guidelines](ai-generation-guidelines/by-language/csharp/code-review/value-object.md): DDD値オブジェクト向けレビュー基準
 
-### トレーニングサンプル
+### AIトレーニングサンプル
 
-- [Common Patterns](AITrainingSamples/Csharp/Common.md): C#の基本パターン
-- [LINQ Patterns](AITrainingSamples/Csharp/Linq.md): LINQの推奨パターン
-- [DateTime Extensions Test Example](AITrainingSamples/Csharp/Example/UnitTestExample_01.md): 実装とテストの完全なサンプル
+#### C# コードパターン
+
+- [Common Patterns](ai-training-samples/codes/csharp/common-patterns.md): C#の基本パターン（null チェック等）
+- [LINQ Patterns](ai-training-samples/codes/csharp/linq-patterns.md): LINQの推奨パターン
+- [DateTime Extensions Example](ai-training-samples/codes/csharp/datetime-extensions.md): 実装とテストの完全なサンプル
+
+## 📂 ディレクトリ構造
+
+```
+ateliers-ai-assistants/
+├─ scripts/                              # セットアップ・更新スクリプト
+│  ├─ init-for-project.sh               # 初回セットアップ
+│  └─ update-ai-guidelines.sh           # 手動更新
+│
+├─ .github/workflows/                    # GitHub Actions
+│  └─ update-ai-guidelines.yml          # 自動更新ワークフロー
+│
+├─ ai-generation-guidelines/             # AI生成用ガイドライン
+│  ├─ fundamentals/                     # 基本原則（言語非依存）
+│  │  ├─ naming-conventions.md
+│  │  ├─ documentation-standards.md
+│  │  └─ code-quality-principles.md
+│  │
+│  ├─ by-language/                      # 言語別ガイドライン
+│  │  ├─ csharp/                       # C#
+│  │  │  ├─ test-generation/
+│  │  │  │  └─ xunit.md
+│  │  │  ├─ code-review/
+│  │  │  │  └─ value-object.md
+│  │  │  └─ patterns/
+│  │  │
+│  │  ├─ powershell/                   # PowerShell
+│  │  ├─ yaml/                         # YAML
+│  │  └─ lua/                          # Lua
+│  │
+│  ├─ by-framework/                     # フレームワーク別
+│  │  ├─ dotnet/
+│  │  ├─ react/
+│  │  └─ vue/
+│  │
+│  ├─ by-tool/                          # ツール別
+│  │  ├─ git/
+│  │  ├─ docker/
+│  │  └─ ci-cd/
+│  │
+│  └─ meta/                             # メタガイドライン
+│     └─ llms-txt/
+│        └─ maintenance.md             # llms.txt メンテナンスガイド
+│
+├─ ai-training-samples/                  # AIトレーニング用サンプル
+│  ├─ codes/                            # コードサンプル
+│  │  ├─ csharp/
+│  │  │  ├─ common-patterns.md
+│  │  │  ├─ linq-patterns.md
+│  │  │  └─ datetime-extensions.md
+│  │  ├─ powershell/
+│  │  ├─ yaml/
+│  │  └─ lua/
+│  │
+│  ├─ configs/                          # 設定ファイルサンプル（将来）
+│  ├─ documents/                        # ドキュメントサンプル（将来）
+│  └─ data/                             # データサンプル（将来）
+│
+├─ tool-specific/                        # ツール固有設定
+│  ├─ github-copilot/
+│  ├─ cursor/
+│  └─ claude/
+│
+├─ docs/                                 # プロジェクト文書
+│  ├─ project-info.md                   # プロジェクト詳細
+│  └─ alternatives/                     # 代替方法の解説
+│
+├─ README.md                             # このファイル
+├─ llms.txt                              # AI向けコンテキスト
+└─ LICENSE.txt                           # MIT ライセンス
+```
+
+### 構造の特徴
+
+#### 1. AI生成用ガイドライン（`ai-generation-guidelines/`）
+
+- **fundamentals/**: 言語非依存の基本原則
+- **by-language/**: 言語別のガイドライン（C#, PowerShell, YAML, Lua等）
+- **by-framework/**: フレームワーク固有のガイドライン
+- **by-tool/**: ツール固有のガイドライン（Git, Docker等）
+- **meta/**: llms.txt などのメタ情報管理
+
+#### 2. AIトレーニングサンプル（`ai-training-samples/`）
+
+- **codes/**: プログラミング言語別のコードサンプル
+- **configs/**: 設定ファイルのサンプル（将来追加予定）
+- **documents/**: ドキュメントのサンプル（将来追加予定）
+- **data/**: データファイルのサンプル（将来追加予定）
+
+この構造により、新しい言語やツールの追加が容易になり、AIツールが目的のガイドラインを見つけやすくなっています。
 
 ## 🌿 ブランチ戦略
 
@@ -140,19 +234,27 @@ https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/llms.txt
 
 ## ⚙️ 技術詳細
 
-- **Target Language**: C#
+- **Primary Language**: C# (他言語も追加可能)
 - **Test Framework**: xUnit
 - **Design Approach**: Domain-Driven Design (DDD) 対応
-- **AI Tools Supported**: GitHub Copilot / Cursor / Claude / その他LLM
+- **AI Tools Supported**: GitHub Copilot / Cursor / Claude / Cline / その他LLM
 
 ## 🔮 今後の予定
 
 以下のガイドラインは将来的に追加予定です：
 
-- CodeGenGuidelines: コード生成向けガイドライン
-- PromptGuidelines: プロンプト設計のベストプラクティス
-- PromptManuals: コード・テスト自動生成の手順マニュアル
-- TestReviewGuidelines: テストレビュー向けガイドライン
+### 言語別ガイドライン
+- **JavaScript/TypeScript**: React, Node.js等のパターン
+- **Python**: pytest を使用したテストパターン
+
+### フレームワーク別ガイドライン
+- **.NET**: ASP.NET Core, Blazor, Entity Framework
+- **React**: コンポーネント設計、Hooks パターン
+
+### ツール別ガイドライン
+- **Git**: コミットメッセージ規約、ブランチ戦略
+- **Docker**: Dockerfile ベストプラクティス
+- **CI/CD**: GitHub Actions, Azure DevOps
 
 ## 📞 Contact
 
@@ -164,6 +266,7 @@ https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/llms.txt
 - このリポジトリは**テキストベース**であり、実行可能なコードは含まれません
 - パッケージではなく**サブモジュール**として利用することを想定しています
 - AIツールが `.md` ファイルを直接参照できるように設計されています
+- 2025年11月に大規模なディレクトリ構造の見直しを実施（AI非依存の設計）
 
 ## 📄 License
 
@@ -171,4 +274,5 @@ MIT License - see [LICENSE.txt](LICENSE.txt)
 
 ---
 
-*Generated: 2025-11-15*
+*Last Updated: 2025-11-15*  
+*Structure: Multi-language AI-agnostic design*

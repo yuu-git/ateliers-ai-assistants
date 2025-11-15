@@ -11,12 +11,14 @@
 - **License**: MIT
 - **Type**: Text-based guidelines and samples
 - **Primary Use**: Git Submodule
-- **Last Updated**: 2025-11-15 (3-tier update system added)
+- **Last Updated**: 2025-11-15 (Multi-language AI-agnostic structure)
 
 ## Purpose
 
 このリポジトリは、AIによる自動コード生成・テスト生成を支援するためのガイドラインとサンプルを提供します。
 特にC#とxUnitを使用した開発において、一貫性のあるコード品質を保つための規約を定義しています。
+
+2025年11月に大規模な構造見直しを実施し、AIツール非依存・多言語対応の設計に移行しました。
 
 ## Installation
 
@@ -73,84 +75,112 @@ git pull origin master
 cd ../..
 ```
 
-## Core Guidelines
-
-### Test Generation (最重要)
-
-- [xUnit Test Creation Guidelines](GitHubCopilot/TestGenGuidelines/TestCreationGuidelines_01.md): C#のxUnit向けテスト自動生成の完全ガイド
-  - テスト命名規則（`TESTNAME_XXX_XXXXX`形式）
-  - partial class による自動生成と手動テストの共存
-  - nameof() を使用したリファクタリング対応
-  - カバレッジ100%を目指すテスト観点
-
-### Code Review Guidelines (参考用)
-
-**注意**: 2024/03/17時点でGitHub Copilotはコードレビューガイドラインをまだサポートしていません
-
-- [Common Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_Common_01.md): 全コードに適用される共通レビュー基準
-- [ValueObject Code Review Guidelines](GitHubCopilot/CodeReviewGuidelines/CodeReviewGuidelines_ValueObject_01.md): DDD値オブジェクト向けレビュー基準
-
-## Training Samples
-
-### C# Coding Patterns
-
-- [Common Patterns](AITrainingSamples/Csharp/Common.md): C#の基本パターン（null チェック等）
-- [LINQ Patterns](AITrainingSamples/Csharp/Linq.md): LINQの推奨パターン
-
-### Complete Examples
-
-- [DateTime Extensions Test Example](AITrainingSamples/Csharp/Example/UnitTestExample_01.md): 実装とテストの完全なサンプル
-  - DateTimeExtensions の実装例
-  - 対応するxUnitテストコードの実例
-  - 実践的なテスト設計パターン
-
 ## Directory Structure
 
 ```
 ateliers-ai-assistants/
-├─ scripts/                    # セットアップ・更新スクリプト
-│  ├─ init-for-project.sh     # 初回セットアップ（ワンライナー）
-│  └─ update-ai-guidelines.sh # 手動更新スクリプト
-├─ .github/workflows/          # GitHub Actions
-│  └─ update-ai-guidelines.yml # 自動更新ワークフロー
-├─ AITrainingSamples/          # AI学習用サンプル
-│  └─ Csharp/                  # C#言語のサンプル
-│     ├─ Common.md             # 基本パターン
-│     ├─ Linq.md               # LINQパターン
-│     └─ Example/              # 完全な実装例
-│        └─ UnitTestExample_01.md
-├─ GitHubCopilot/              # GitHub Copilot向けガイドライン
-│  ├─ CodeReviewGuidelines/   # コードレビュー基準（参考用）
-│  │  ├─ CodeReviewGuidelines_Common_01.md
-│  │  └─ CodeReviewGuidelines_ValueObject_01.md
-│  └─ TestGenGuidelines/       # テスト生成ガイドライン
-│     └─ TestCreationGuidelines_01.md
-├─ README.md                   # リポジトリの基本情報
-├─ ProjectInfo.md              # プロジェクト構造の詳細
-├─ LICENSE.txt                 # MITライセンス
-└─ llms.txt                    # このファイル
+├─ scripts/                              # セットアップ・更新スクリプト
+│  ├─ init-for-project.sh
+│  └─ update-ai-guidelines.sh
+├─ .github/workflows/                    # GitHub Actions
+│  └─ update-ai-guidelines.yml
+├─ ai-generation-guidelines/             # AI生成用ガイドライン
+│  ├─ fundamentals/                     # 基本原則（言語非依存）
+│  ├─ by-language/                      # 言語別ガイドライン
+│  │  ├─ csharp/
+│  │  ├─ powershell/
+│  │  ├─ yaml/
+│  │  └─ lua/
+│  ├─ by-framework/                     # フレームワーク別
+│  ├─ by-tool/                          # ツール別
+│  └─ meta/                             # メタガイドライン
+│     └─ llms-txt/
+├─ ai-training-samples/                  # AIトレーニング用サンプル
+│  └─ codes/                            # コードサンプル
+│     ├─ csharp/
+│     ├─ powershell/
+│     ├─ yaml/
+│     └─ lua/
+├─ tool-specific/                        # ツール固有設定
+│  ├─ github-copilot/
+│  ├─ cursor/
+│  └─ claude/
+├─ docs/                                 # プロジェクト文書
+├─ README.md
+├─ llms.txt                              # このファイル
+└─ LICENSE.txt
 ```
 
-## Project Documentation
+## Core Guidelines
 
-- [README](README.md): リポジトリの基本情報と使い方
-- [Project Info](ProjectInfo.md): プロジェクト構造の詳細説明
+### 🎯 Fundamentals (言語非依存の基本原則)
 
-## Branch Strategy
+基本的なコーディング原則とベストプラクティス（準備中）
 
-- **master**: 安定版（推奨）
-- **develop**: 開発版
+- Naming Conventions: 命名規則の基本
+- Documentation Standards: ドキュメント標準
+- Code Quality Principles: コード品質の基本原則
 
-## Technical Details
+### 💻 C# Guidelines
 
-- **Target Language**: C#
-- **Test Framework**: xUnit
-- **Design Approach**: Domain-Driven Design (DDD) 対応
-- **AI Tools Supported**: 
-  - GitHub Copilot
-  - Cursor
-  - Claude
-  - その他LLMベースのコーディング支援ツール
+#### Test Generation (最重要)
+
+- [xUnit Test Creation Guidelines](ai-generation-guidelines/by-language/csharp/test-generation/xunit.md)
+  - テスト命名規則（`TESTNAME_XXX_XXXXX`形式）
+  - partial class による自動生成と手動テストの共存
+  - nameof() を使用したリファクタリング対応
+  - カバレッジ100%を目指すテスト観点
+  - 完全な実装例を含む実践的ガイド
+
+#### Code Review (参考用)
+
+**注意**: 2024/03/17時点でGitHub Copilotはコードレビューをまだサポートしていません
+
+- [Code Quality Principles](ai-generation-guidelines/fundamentals/code-quality-principles.md)
+  - 全コードに適用される共通の品質基準
+- [ValueObject Review Guidelines](ai-generation-guidelines/by-language/csharp/code-review/value-object.md)
+  - DDD値オブジェクト向けレビュー基準
+  - 不変性、等値性のチェック項目
+
+### 🔧 PowerShell Guidelines
+
+準備中
+
+### 📄 YAML Guidelines
+
+準備中
+
+### 🎮 Lua Guidelines
+
+準備中
+
+## Training Samples
+
+### C# Code Patterns
+
+- [Common Patterns](ai-training-samples/codes/csharp/common-patterns.md)
+  - null チェックのパターン
+  - 基本的なC#の書き方
+- [LINQ Patterns](ai-training-samples/codes/csharp/linq-patterns.md)
+  - LINQ の推奨パターン
+  - パフォーマンスを考慮した書き方
+
+### Complete Examples
+
+- [DateTime Extensions Example](ai-training-samples/codes/csharp/datetime-extensions.md)
+  - 実装とテストの完全なサンプル
+  - DateTimeExtensions の実装例
+  - 対応するxUnitテストコードの実例
+  - 実践的なテスト設計パターン
+
+## Meta Guidelines
+
+### llms.txt Maintenance
+
+- [llms.txt Maintenance Guidelines](ai-generation-guidelines/meta/llms-txt/maintenance.md)
+  - llms.txt の更新手順
+  - 品質チェックリスト
+  - AIによる自動更新方法
 
 ## Usage in AI Tools
 
@@ -168,14 +198,79 @@ ateliers-ai-assistants/
 
 サブモジュールとして追加後、該当ディレクトリ内のファイルを開くことでコンテキストとして認識されます。
 
+主要ファイル:
+- `ai-generation-guidelines/by-language/csharp/test-generation/xunit.md`
+- `ai-training-samples/codes/csharp/common-patterns.md`
+- `ai-training-samples/codes/csharp/linq-patterns.md`
+
+### Claude
+
+会話の最初に以下を貼り付けてください:
+
+```
+このリポジトリのガイドラインに従ってください：
+https://raw.githubusercontent.com/yuu-git/ateliers-ai-assistants/master/llms.txt
+```
+
+## Branch Strategy
+
+- **master**: 安定版（推奨）
+- **develop**: 開発版
+
+## Technical Details
+
+- **Primary Language**: C# (他言語も追加可能な構造)
+- **Test Framework**: xUnit
+- **Design Approach**: Domain-Driven Design (DDD) 対応
+- **AI Tools Supported**: 
+  - GitHub Copilot
+  - Cursor
+  - Cline
+  - Claude
+  - その他LLMベースのコーディング支援ツール
+
+## Architecture Principles
+
+### Multi-language Support
+
+新しい言語は以下のように追加できます:
+
+```
+ai-generation-guidelines/
+  by-language/
+    [new-language]/
+      test-generation/
+      code-review/
+      patterns/
+      style-guide.md
+```
+
+### AI Tool Agnostic
+
+ガイドラインは特定のAIツールに依存しない設計:
+
+- `ai-generation-guidelines/`: 汎用的なガイドライン
+- `tool-specific/`: ツール固有の設定（必要な場合のみ）
+
 ## Future Plans
 
-以下のガイドラインは将来的に追加予定です：
+### 言語別ガイドライン
 
-- CodeGenGuidelines: コード生成向けガイドライン
-- PromptGuidelines: プロンプト設計のベストプラクティス
-- PromptManuals: コード・テスト自動生成の手順マニュアル
-- TestReviewGuidelines: テストレビュー向けガイドライン
+- **JavaScript/TypeScript**: Jest/Vitest テストパターン、React コンポーネント設計
+- **Python**: pytest パターン、型ヒントの活用
+- **Go**: テーブル駆動テスト、エラーハンドリング
+
+### フレームワーク別ガイドライン
+
+- **.NET**: ASP.NET Core, Blazor, Entity Framework
+- **React**: Hooks パターン、状態管理
+- **Vue**: Composition API パターン
+
+### ツール別ガイドライン
+
+- **Git**: コミットメッセージ規約、ブランチ戦略
+- **Docker**: Dockerfile ベストプラクティス
+- **CI/CD**: GitHub Actions、Azure DevOps パターン
 
 ## Contact
 
@@ -187,8 +282,15 @@ ateliers-ai-assistants/
 - このリポジトリは**テキストベース**であり、実行可能なコードは含まれません
 - パッケージではなく**サブモジュール**として利用することを想定しています
 - AIツールが `.md` ファイルを直接参照できるように設計されています
+- 2025年11月にAIツール非依存・多言語対応の構造に全面改訂
+
+## Project Documentation
+
+- [README](README.md): リポジトリの基本情報と使い方
+- [Project Info](docs/project-info.md): プロジェクト構造の詳細説明
 
 ---
 
 *Generated: 2025-11-15*  
-*AI Optimization: LLM-friendly structure with clear hierarchy and direct links*
+*AI Optimization: Multi-language support with clear hierarchy*  
+*Structure: AI tool-agnostic design for maximum compatibility*
